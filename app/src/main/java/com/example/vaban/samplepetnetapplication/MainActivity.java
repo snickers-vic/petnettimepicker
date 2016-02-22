@@ -44,8 +44,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Fire
 
         mSaveButton.setOnClickListener(this);
 
-        mSaveButton.setEnabled(false);
+        /*mSaveButton.setEnabled(false);
 
+        mPetNetTimePickerWrapper = new PetNetTimePickerWrapper(mPetnetTimePicker,mCommunicator);*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSaveButton.setEnabled(false);
         mPetNetTimePickerWrapper = new PetNetTimePickerWrapper(mPetnetTimePicker,mCommunicator);
     }
 

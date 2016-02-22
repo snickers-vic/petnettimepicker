@@ -7,6 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+
+    android:background="@color/mdtp_white"
     tools:context="com.example.vaban.samplepetnetapplication.MainActivity">
 
     <com.vaban.petnettimepickerlib.view.PetnetTimePicker
@@ -22,9 +24,12 @@
     <Button
         android:id="@+id/saveBtn"
         android:text="Save"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/petnet_timepicker"
+        android:layout_alignEnd="@+id/petnet_timepicker"
+        android:background="@color/mdtp_accent_color"
+        android:textColor="@color/mdtp_white"
         />
 </RelativeLayout>

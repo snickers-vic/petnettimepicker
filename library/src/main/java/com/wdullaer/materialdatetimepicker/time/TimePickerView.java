@@ -213,8 +213,8 @@ public class TimePickerView extends LinearLayout implements
         mSelectMinutes = res.getString(R.string.mdtp_select_minutes);
         mSecondPickerDescription = res.getString(R.string.mdtp_second_picker_description);
         mSelectSeconds = res.getString(R.string.mdtp_select_seconds);
-        mSelectedColor = ContextCompat.getColor(context, R.color.mdtp_white);
-        mUnselectedColor = ContextCompat.getColor(context, R.color.mdtp_accent_color_focused);
+        mSelectedColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_disabled_dark_theme);
+        mUnselectedColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_month_day_dark_theme);
 
         mHourView = (TextView) findViewById(R.id.hours);
         mHourView.setOnKeyListener(keyboardListener);
@@ -394,9 +394,9 @@ public class TimePickerView extends LinearLayout implements
         // Set the theme at the end so that the initialize()s above don't counteract the theme.
 //        mOkButton.setTextColor(mAccentColor);
 //        mCancelButton.setTextColor(mAccentColor);
-        timePickerHeader.setBackgroundColor(Utils.darkenColor(mAccentColor));
-        findViewById(R.id.time_display_background).setBackgroundColor(mAccentColor);
-        findViewById(R.id.time_display).setBackgroundColor(mAccentColor);
+        timePickerHeader.setBackgroundColor(getResources().getColor(R.color.mdtp_white));
+        findViewById(R.id.time_display_background).setBackgroundColor(getResources().getColor(R.color.mdtp_white));
+        findViewById(R.id.time_display).setBackgroundColor(getResources().getColor(R.color.mdtp_white));
 
         /*if(getDialog() == null) {
             view.findViewById(R.id.done_background).setVisibility(View.GONE);
@@ -407,6 +407,7 @@ public class TimePickerView extends LinearLayout implements
         int darkBackgroundColor = ContextCompat.getColor(context, R.color.mdtp_light_gray);
         int lightGray = ContextCompat.getColor(context, R.color.mdtp_light_gray);
 
+//        mTimePicker.setBackgroundColor(mThemeDark? lightGray : circleBackground);
         mTimePicker.setBackgroundColor(mThemeDark? lightGray : circleBackground);
         findViewById(R.id.time_picker_view).setBackgroundColor(mThemeDark ? darkBackgroundColor : backgroundColor);
     }

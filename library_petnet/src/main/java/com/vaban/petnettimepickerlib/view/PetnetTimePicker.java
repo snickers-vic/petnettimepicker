@@ -46,6 +46,7 @@ public class PetnetTimePicker extends RelativeLayout {
 
         mTimePickerView = (TimePickerView)findViewById (R.id.timePicker);
         mEditText = (EditText) findViewById(R.id.nameEditText);
+
     }
 
     public TimePickerData getTimerData(){
