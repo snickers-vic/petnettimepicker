@@ -3,6 +3,7 @@ package com.vaban.petnettimepickerlib.view;
 import android.content.Context;
 import android.text.format.Time;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import java.util.Calendar;
  */
 public class PetnetTimePicker extends RelativeLayout {
 
+    private static final String LOG_TAG = PetnetTimePicker.class.getSimpleName();
     EditText mEditText;
     TimePickerView mTimePickerView;
 
@@ -59,16 +61,20 @@ public class PetnetTimePicker extends RelativeLayout {
         now.set(Calendar.MINUTE, mTimePickerView.getMinute());
 
         data.setTime(now.getTimeInMillis());
-
+        Log.d(LOG_TAG, "getTimerData " + data.getName() + " " + data.getTime());
         return data;
     }
     public void setTimerData(TimePickerData mTimePickerData) {
         Calendar calendar = Calendar.getInstance();
 
-        calendar.setTimeInMillis(mTimePickerData.getTime() * 1000);
+        calendar.setTimeInMillis(mTimePickerData.getTime());
 
         Timepoint timePoint = new Timepoint(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-        mTimePickerView.onValueSelected(timePoint);
+        /*mTimePickerView.onValueSelected(timePoint);
+
+        mTimePickerView.initialize(null, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), false);
+        */
+        mTimePickerView.changeTimeValue(timePoint);
 
         mEditText.setText(mTimePickerData.getName());
     }

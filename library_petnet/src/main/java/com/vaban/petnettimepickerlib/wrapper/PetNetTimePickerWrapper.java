@@ -62,7 +62,7 @@ public class PetNetTimePickerWrapper {
                 public void onRequestTimeCompleted(TimePickerData data) {
                     mTimePickerData = data;
                     mTimePicker.setTimerData(mTimePickerData);
-                    Log.d(LOG_TAG, "RequestTime! " + data.getName());
+                    Log.d(LOG_TAG, "RequestTime! " + data.getName() + " " + data.getTime());
 
                     mRequestTimeListener.onRequestTimeCompleted(data);
                 }

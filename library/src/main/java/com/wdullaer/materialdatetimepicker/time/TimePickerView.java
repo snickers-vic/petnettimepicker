@@ -158,15 +158,25 @@ public class TimePickerView extends LinearLayout implements
 
     public TimePickerView(Context context) {
         super(context);
+        Calendar now = Calendar.getInstance();
+
+        initialize(null, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), 0, false);
+        initView(context);
     }
 
     public TimePickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Calendar now = Calendar.getInstance();
+
+        initialize(null, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), 0, false);
         initView(context);
     }
 
     public TimePickerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        Calendar now = Calendar.getInstance();
+
+        initialize(null, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), 0, false);
         initView(context);
     }
 
@@ -183,9 +193,6 @@ public class TimePickerView extends LinearLayout implements
     }
 
     private void initView(Context context){
-        Calendar now = Calendar.getInstance();
-
-        initialize(null, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), 0, false);
 
 //        View.inflate(getContext(), R.layout.mdtp_time_picker_view, this);
 
@@ -760,6 +767,11 @@ public class TimePickerView extends LinearLayout implements
         if(!mIs24HourMode) updateAmPmDisplay(newValue.isAM() ? AM : PM);
     }
 
+    public void changeTimeValue(Timepoint newValue){
+        onValueSelected(newValue);
+//        updateDisplay(false);
+    }
+
     @Override
     public void advancePicker(int index) {
         if(!mAllowAutoAdvance) return;
@@ -902,13 +914,17 @@ public class TimePickerView extends LinearLayout implements
             if(mTimePicker.getIsCurrentlyAmOrPm() == PM){
                 if(value != 12){
                     value += 12;
+                    return value;
+                } else {
+                    return value;
                 }
             } else {
                 if( value == 12){
                     value = 0;
                 }
+                return value;
             }
-            return value;
+
         }
     }
 
@@ -1580,5 +1596,10 @@ public class TimePickerView extends LinearLayout implements
         if (mCallback != null) {
             mCallback.onTimeSet(mTimePicker, mTimePicker.getHours(), mTimePicker.getMinutes(), mTimePicker.getSeconds());
         }
+    }
+
+    public void changeTimePoint(Calendar calendar){
+        initialize(null, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), false);
+        initView(getContext());
     }
 }

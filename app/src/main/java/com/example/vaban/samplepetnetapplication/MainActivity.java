@@ -56,6 +56,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Fire
     @Override
     protected void onResume() {
         super.onResume();
+        Toast.makeText(MainActivity.this, "Requesting Authentication", Toast.LENGTH_SHORT).show();
         mSaveButton.setEnabled(false);
         mCommunicator.requestHandShake();
     }
@@ -64,6 +65,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Fire
     public void onClick(View v) {
 
         mPetNetTimePickerWrapper.sendDisplayTime();
+        Toast.makeText(MainActivity.this, "Sending Time", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -81,12 +83,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Fire
 
     @Override
     public void onSendTimeCompleted() {
-        Toast.makeText(MainActivity.this, "Send Time Completed!", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MainActivity.this, "Send Time Completed!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRequestTimeCompleted(TimePickerData data) {
-        Toast.makeText(MainActivity.this, "Request Time Completed!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Time Updated!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
