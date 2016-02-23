@@ -12,13 +12,15 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.vaban.petnettimepickerlib.communicator.FirebaseCommunicator;
 import com.vaban.petnettimepickerlib.communicator.ICommunicator;
+import com.vaban.petnettimepickerlib.listener.RequestTimeListener;
 import com.vaban.petnettimepickerlib.listener.SendTimeListener;
+import com.vaban.petnettimepickerlib.model.TimePickerData;
 import com.vaban.petnettimepickerlib.view.PetnetTimePicker;
 import com.vaban.petnettimepickerlib.wrapper.PetNetTimePickerWrapper;
 
 import static com.example.vaban.samplepetnetapplication.R.*;
 
-public class MainActivity extends Activity implements View.OnClickListener, Firebase.AuthResultHandler, SendTimeListener {
+public class MainActivity extends Activity implements View.OnClickListener, Firebase.AuthResultHandler, RequestTimeListener, SendTimeListener {
 
 
 
@@ -44,26 +46,29 @@ public class MainActivity extends Activity implements View.OnClickListener, Fire
 
         mSaveButton.setOnClickListener(this);
 
-        /*mSaveButton.setEnabled(false);
+        mPetNetTimePickerWrapper = new PetNetTimePickerWrapper(this, mPetnetTimePicker,mCommunicator);
 
-        mPetNetTimePickerWrapper = new PetNetTimePickerWrapper(mPetnetTimePicker,mCommunicator);*/
+        mPetNetTimePickerWrapper.setRequestTimeListener(this);
+        mPetNetTimePickerWrapper.setSendTimeListener(this);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mSaveButton.setEnabled(false);
-        mPetNetTimePickerWrapper = new PetNetTimePickerWrapper(mPetnetTimePicker,mCommunicator);
+        mCommunicator.requestHandShake();
     }
 
     @Override
     public void onClick(View v) {
-        mPetNetTimePickerWrapper.save(this);
+
+        mPetNetTimePickerWrapper.sendDisplayTime();
     }
 
     @Override
     public void onAuthenticated(AuthData authData) {
-        mPetNetTimePickerWrapper.updateDisplayTime();
+        mPetNetTimePickerWrapper.requestDisplayTime();
         mSaveButton.setEnabled(true);
         Toast.makeText(MainActivity.this, "Authenticated!", Toast.LENGTH_SHORT).show();
 //        authData.
@@ -75,7 +80,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Fire
     }
 
     @Override
-    public void onComplete() {
-        Toast.makeText(MainActivity.this, "Completed!", Toast.LENGTH_SHORT).show();
+    public void onSendTimeCompleted() {
+        Toast.makeText(MainActivity.this, "Send Time Completed!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestTimeCompleted(TimePickerData data) {
+        Toast.makeText(MainActivity.this, "Request Time Completed!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestTimeCancelled() {
+
     }
 }

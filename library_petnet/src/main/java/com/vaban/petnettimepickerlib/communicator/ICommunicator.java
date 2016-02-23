@@ -12,4 +12,5 @@ public interface ICommunicator {
     public void sendTime(TimePickerData data, SendTimeListener listener);
     public void requestTime( RequestTimeListener listener);
 
+    public void requestHandShake();
 }

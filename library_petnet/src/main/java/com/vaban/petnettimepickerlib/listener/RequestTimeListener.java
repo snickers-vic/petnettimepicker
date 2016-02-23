@@ -7,7 +7,7 @@ import com.vaban.petnettimepickerlib.model.TimePickerData;
  */
 public interface RequestTimeListener {
 
-    public void onCompleted(TimePickerData data);
-    public void onCancelled();
+    public void onRequestTimeCompleted(TimePickerData data);
+    public void onRequestTimeCancelled();
 
 }

@@ -26,14 +26,15 @@ public class FirebaseCommunicator implements ICommunicator {
     String mUrl;
     String mToken;
 
-    public FirebaseCommunicator(Context context, String url, String token, Firebase.AuthResultHandler mHandler){
+    public FirebaseCommunicator(Context context, String url, String token, Firebase.AuthResultHandler handler){
         mContext = context;
         Firebase.setAndroidContext(mContext);
         mUrl = url;
         mToken = token;
         mFirebaseRef = new Firebase(url);
+        mHandler = handler;
 
-        mFirebaseRef.authWithCustomToken(mToken, mHandler);
+        requestHandShake();
 
         mTimePickerRef = mFirebaseRef.child("time_picker");
     }
@@ -44,16 +45,9 @@ public class FirebaseCommunicator implements ICommunicator {
         mTimePickerRef.setValue(data, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                listener.onComplete();
+                listener.onSendTimeCompleted();
             }
         });
-        /*mTimePickerRef.child("name").setValue(data.getName());
-        mTimePickerRef.child("time").setValue(data.getTime(), new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-
-            }
-        });*/
     }
 
     @Override
@@ -64,15 +58,20 @@ public class FirebaseCommunicator implements ICommunicator {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TimePickerData data = dataSnapshot.getValue(TimePickerData.class);
-                listener.onCompleted(data);
+                listener.onRequestTimeCompleted(data);
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Log.d(LOG_TAG, firebaseError.getCode() + " " + firebaseError.getMessage() + firebaseError.getDetails());
-                listener.onCancelled();
+                listener.onRequestTimeCancelled();
             }
         });
 
+    }
+
+    @Override
+    public void requestHandShake() {
+        mFirebaseRef.authWithCustomToken(mToken, mHandler);
     }
 }

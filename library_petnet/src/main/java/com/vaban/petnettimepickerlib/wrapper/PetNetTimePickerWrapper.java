@@ -1,7 +1,7 @@
 package com.vaban.petnettimepickerlib.wrapper;
 
+import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.vaban.petnettimepickerlib.communicator.ICommunicator;
 import com.vaban.petnettimepickerlib.listener.RequestTimeListener;
@@ -15,16 +15,20 @@ import com.vaban.petnettimepickerlib.view.PetnetTimePicker;
 public class PetNetTimePickerWrapper {
 
     private static final String LOG_TAG = PetNetTimePickerWrapper.class.getSimpleName();
-    PetnetTimePicker mTimePicker;
-    TimePickerData mTimePickerData;
-    ICommunicator mCommunicator;
+    private PetnetTimePicker mTimePicker;
+    private TimePickerData mTimePickerData;
+    private ICommunicator mCommunicator;
 
-    public PetNetTimePickerWrapper(PetnetTimePicker timePicker, ICommunicator communicator){
+    private RequestTimeListener mRequestTimeListener;
+    private SendTimeListener mSendTimeListener;
+
+    public PetNetTimePickerWrapper(Context context, PetnetTimePicker timePicker, ICommunicator communicator){
         mTimePicker = timePicker;
         mTimePickerData = new TimePickerData();
         mCommunicator = communicator;
 
-
+        mRequestTimeListener = null;
+        mSendTimeListener = null;
     }
 
     public PetnetTimePicker getTimePicker() {
@@ -51,19 +55,22 @@ public class PetNetTimePickerWrapper {
         this.mCommunicator = mCommunicator;
     }
 
-    public boolean updateDisplayTime(){
+    public boolean requestDisplayTime(){
         if(mCommunicator != null){
             mCommunicator.requestTime(new RequestTimeListener() {
                 @Override
-                public void onCompleted(TimePickerData data) {
+                public void onRequestTimeCompleted(TimePickerData data) {
                     mTimePickerData = data;
                     mTimePicker.setTimerData(mTimePickerData);
                     Log.d(LOG_TAG, "RequestTime! " + data.getName());
+
+                    mRequestTimeListener.onRequestTimeCompleted(data);
                 }
 
                 @Override
-                public void onCancelled() {
+                public void onRequestTimeCancelled() {
                     mTimePickerData = new TimePickerData();
+                    mRequestTimeListener.onRequestTimeCancelled();
                 }
             });
 
@@ -73,10 +80,26 @@ public class PetNetTimePickerWrapper {
         }
     }
 
-    public void save(SendTimeListener sendTimeListener){
+    public void sendDisplayTime(){
         if(mCommunicator != null) {
             mTimePickerData = mTimePicker.getTimerData();
-            mCommunicator.sendTime(mTimePickerData, sendTimeListener);
+            mCommunicator.sendTime(mTimePickerData, mSendTimeListener);
         }
+    }
+
+    public RequestTimeListener getmRequestTimeListener() {
+        return mRequestTimeListener;
+    }
+
+    public void setRequestTimeListener(RequestTimeListener mRequestTimeListener) {
+        this.mRequestTimeListener = mRequestTimeListener;
+    }
+
+    public SendTimeListener getmSendTimeListener() {
+        return mSendTimeListener;
+    }
+
+    public void setSendTimeListener(SendTimeListener mSendTimeListener) {
+        this.mSendTimeListener = mSendTimeListener;
     }
 }
