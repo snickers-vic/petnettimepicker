@@ -769,6 +769,11 @@ public class TimePickerView extends LinearLayout implements
 
     public void changeTimeValue(Timepoint newValue){
         onValueSelected(newValue);
+        mTimePicker.setTime(newValue);
+        if (!mIs24HourMode) {
+            mTimePicker.setAmOrPm(newValue.isAM()? AM : PM );
+        }
+//        finishKbMode(true);
 //        updateDisplay(false);
     }
 

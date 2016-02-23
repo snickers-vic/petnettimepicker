@@ -60,14 +60,14 @@ public class PetnetTimePicker extends RelativeLayout {
         now.set(Calendar.HOUR_OF_DAY, mTimePickerView.getHour());
         now.set(Calendar.MINUTE, mTimePickerView.getMinute());
 
-        data.setTime(now.getTimeInMillis());
+        data.setTime(now.getTimeInMillis()/1000);
         Log.d(LOG_TAG, "getTimerData " + data.getName() + " " + data.getTime());
         return data;
     }
     public void setTimerData(TimePickerData mTimePickerData) {
         Calendar calendar = Calendar.getInstance();
 
-        calendar.setTimeInMillis(mTimePickerData.getTime());
+        calendar.setTimeInMillis(mTimePickerData.getTime()* 1000);
 
         Timepoint timePoint = new Timepoint(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
         /*mTimePickerView.onValueSelected(timePoint);
